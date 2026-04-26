@@ -512,65 +512,28 @@ function getWeather() {
       <button class="copy-btn" onclick="copyBlock(this, 'block6')">Copy</button>
     </div>
     <div class="card-body">
-      <pre id="block6">## 🔹 Step 1: Create Repository on GitHub
-1. Go to GitHub
-2. Click **New Repository**
-3. Enter:
-   * Repository name: **MDMTest**
-   * Check ✔ **Add a README file**
-4. Click **Create Repository**
-
-## 🔹 Step 2: Copy Repository URL
-1. Open your repo (MDMTest)
-2. Click **Code** button
-3. Copy the HTTPS URL (example):
-   ```
-   https://github.com/your-username/MDMTest.git
-   ```
-
-## 🔹 Step 3: Clone Repository to Local System
-1. Open **Command Prompt / Terminal**
-2. Run:
-   ```
-   git clone https://github.com/your-username/MDMTest.git
-   ```
-3. Move into folder:
-   ```
-   cd MDMTest
-   ```
-
-## 🔹 Step 4: Open Project in VS Code
-1. Open Visual Studio Code
-2. Click **File → Open Folder**
-3. Select the **MDMTest** folder
-
-## 🔹 Step 5: Edit ReadMe.md File
-1. Open `README.md`
-2. Add some text like:
-   ```
-   # MDMTest Repository
-   This is my first GitHub update.
-   ```
-3. Save the file (Ctrl + S)
-
-## 🔹 Step 6: Add Changes (Staging)
-In terminal (inside VS Code or CMD):
-```
-git add README.md
-```
-
-## 🔹 Step 7: Commit Changes
-```
-git commit -m "Updated README file"
-```
-
-## 🔹 Step 8: Push Changes to GitHub
-```
-git push origin main
-```</pre>
-    </div>
-  </div>
-
+      <pre id="block6">GIT HUB
+        
+    1.OPEN GIT HUB
+    2.create new repository
+    3.open README.md (write someting in that) and commit changes
+    4.OPEN FILES 
+    5.In desktop create folder git-demo
+    6.Open git-demo folder right-click and select git bash here(bash will get open)
+    7.COMMANDS in GIT BASH
+	1.git --version
+	2.git config --global user.name "repository name" 
+	3.git config --global user.email "github signup email"
+	4.git config --global --list
+	5.git clone https://github.com/atiya-kazi/MDMB4.git
+		(https://github.com/atiya-kazi/MDMB4.git : to get this link open github from code section you willget this link)
+	6.cd MDMB4 (at palce of MDMB4 give repository name)
+	7.code . 
+	8.Do Update in README.md
+	9.git add . 
+	10.git commit -m "README.md"
+	11.git push origin main
+    8.now open github relod the page.
 
   <!-- ── BLOCK 7: DTD XML ── -->
   <div class="card">
@@ -632,6 +595,40 @@ git push origin main
 //Step 4: Create XSL File
 //1. Click New File and write your xsl code . 
 //2. Write following code and name this file as students.xsl
+
+
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"&gt;
+
+&lt;xsl:template match="/"&gt;
+&lt;html&gt;
+&lt;body&gt;
+    &lt;h2&gt;Student Records&lt;/h2&gt;
+    &lt;table border="1" cellpadding="5" cellspacing="0"&gt;
+        &lt;tr&gt;
+            &lt;th&gt;Roll No&lt;/th&gt;
+            &lt;th&gt;Name&lt;/th&gt;
+            &lt;th&gt;Course&lt;/th&gt;
+            &lt;th&gt;Semester&lt;/th&gt;
+            &lt;th&gt;Email&lt;/th&gt;
+        &lt;/tr&gt;
+
+        &lt;xsl:for-each select="students/student"&gt;
+            &lt;tr&gt;
+                &lt;td&gt;&lt;xsl:value-of select="rollno"/&gt;&lt;/td&gt;
+                &lt;td&gt;&lt;xsl:value-of select="name"/&gt;&lt;/td&gt;
+                &lt;td&gt;&lt;xsl:value-of select="course"/&gt;&lt;/td&gt;
+                &lt;td&gt;&lt;xsl:value-of select="semester"/&gt;&lt;/td&gt;
+                &lt;td&gt;&lt;xsl:value-of select="email"/&gt;&lt;/td&gt;
+            &lt;/tr&gt;
+        &lt;/xsl:for-each&gt;
+
+    &lt;/table&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+&lt;/xsl:template&gt;
+
+&lt;/xsl:stylesheet&gt;
 
 
 //Step 6: Check if live server extension is installed in Vs-code.
