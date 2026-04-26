@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Code Notes</title>
+<style>
+  /* ── Reset & Base ── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface2: #222536;
+    --border: #2e3249;
+    --accent: #5b8af0;
+    --accent2: #7c3aed;
+    --green: #22c55e;
+    --text: #e2e4f0;
+    --muted: #7b82a8;
+    --radius: 12px;
+    --font-mono: 'Courier New', Courier, monospace;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    padding: 40px 20px 80px;
+  }
+
+  /* ── Header ── */
+  header {
+    max-width: 900px;
+    margin: 0 auto 36px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .logo-icon {
+    width: 36px; height: 36px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    background: linear-gradient(90deg, var(--accent), #a78bfa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* ── Copy All Button ── */
+  #copyAllBtn {
+    padding: 10px 22px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity .2s, transform .15s;
+    letter-spacing: 0.3px;
+  }
+  #copyAllBtn:hover { opacity: .88; transform: translateY(-1px); }
+  #copyAllBtn:active { transform: translateY(0); }
+
+  /* ── Grid of Cards ── */
+  .grid {
+    max-width: 900px;
+    margin: 0 auto;
+    display: grid;
+    gap: 20px;
+  }
+
+  /* ── Card ── */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: border-color .2s, transform .2s;
+  }
+  .card:hover { border-color: var(--accent); transform: translateY(-2px); }
+
+  /* Card header bar */
+  .card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+    gap: 12px;
+  }
+
+  .card-title {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .tag {
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+  .tag-html  { background: #3b1a0a; color: #fb923c; }
+  .tag-js    { background: #2d2a00; color: #facc15; }
+  .tag-php   { background: #1e1040; color: #a78bfa; }
+  .tag-xml   { background: #0c2a1e; color: #34d399; }
+  .tag-react { background: #0a1e2a; color: #38bdf8; }
+  .tag-git   { background: #200f0f; color: #f87171; }
+  .tag-md    { background: #1a1a2e; color: #818cf8; }
+
+  /* Copy button */
+  .copy-btn {
+    padding: 6px 14px;
+    background: transparent;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all .2s;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .copy-btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .copy-btn.copied { background: var(--green); color: #fff; border-color: var(--green); }
+
+  /* Card body */
+  .card-body {
+    padding: 16px;
+  }
+
+  /* Code block */
+  pre {
+    background: #0a0c14;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+    overflow-x: auto;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    line-height: 1.65;
+    color: #c9d1e8;
+    white-space: pre;
+  }
+
+  /* Plain text block */
+  .text-block {
+    font-size: 0.875rem;
+    line-height: 1.7;
+    color: #b4bcd6;
+  }
+
+  .text-block h3 {
+    font-size: 0.95rem;
+    color: var(--accent);
+    margin-bottom: 8px;
+    font-weight: 700;
+  }
+
+  .text-block p { margin-bottom: 6px; }
+
+  .step {
+    display: flex;
+    gap: 10px;
+    padding: 6px 0;
+    border-bottom: 1px solid #1e2133;
+    font-size: 0.83rem;
+  }
+  .step:last-child { border-bottom: none; }
+  .step-num {
+    flex-shrink: 0;
+    width: 22px; height: 22px;
+    background: var(--accent);
+    color: #fff;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.7rem;
+    font-weight: 700;
+  }
+
+  /* Scrollbar styling */
+  pre::-webkit-scrollbar { height: 4px; }
+  pre::-webkit-scrollbar-track { background: transparent; }
+  pre::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.78rem;
+    margin-top: 40px;
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════
+     HEADER
+══════════════════════════════════ -->
+<header>
+  <div class="logo">
+    <div class="logo-icon">📋</div>
+    <h1>Code Notes</h1>
+  </div>
+  <!-- Copy All button — copies all block contents joined together -->
+  <button id="copyAllBtn">⊕ Copy All</button>
+</header>
+
+<!-- ══════════════════════════════════
+     CARDS GRID
+══════════════════════════════════ -->
+<div class="grid">
+
+
+  <!-- ── BLOCK 1: Dropdown ── -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">
+        <span class="tag tag-html">HTML</span>
+        1. Dropdown
+      </span>
+      <button class="copy-btn" onclick="copyBlock(this, 'block1')">Copy</button>
+    </div>
+    <div class="card-body">
+      <pre id="block1">&lt;html&gt;
+&lt;head&gt;
+&lt;style&gt;
+body{margin:0;padding:0;}
+ul{list-style-type:none;background-color:black;color:white;}
+ul li{display:inline-block;padding:10px;}
+ul li:hover{background-color:green;color:white;}
+.dropdown{display:none;}
+ul li:hover .dropdown{display:block;position:absolute;margin-top:7px;
+margin-left:-0.2cm;}
+.dropdown ul{margin:0px;padding:0px;}
+.dropdown ul li{display:block;}
+#result{
+margin:20px; padding:15px; border:2px solid green; width:60%;}
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;ul&gt;
+&lt;li&gt; Home&lt;/li&gt;&lt;li&gt;Indian City
+&lt;div class="dropdown"&gt;
+&lt;ul&gt;&lt;li onclick="showMonument('Mumbai')"&gt;Mumbai&lt;/li&gt;
+&lt;li onclick="showMonument('Delhi')"&gt;Delhi&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;&lt;/li&gt;&lt;/ul&gt;
+&lt;div id="result"&gt;
+&lt;h3&gt;Famous Monument&lt;/h3&gt;
+&lt;p&gt;Select a city to see details&lt;/p&gt;
+&lt;/div&gt;
+&lt;script&gt;
+function showMonument(city){
+let result = document.getElementById("result");
+if(city === "Mumbai"){
+result.innerHTML = `&lt;h3&gt;Gateway of India&lt;/h3&gt;
+&lt;!-- &lt;img src="images/mumbai.jpg" width="300"&gt; --&gt;        &lt;!-- If you want to add images in this otherwise delete this  --&gt;
+&lt;p&gt;The Gateway of India is a historic monument located in Mumbai, built
+in 1924 overlooking the Arabian Sea.&lt;/p&gt;`;
+}
+else if(city === "Delhi"){
+result.innerHTML = ` &lt;h3&gt;India Gate&lt;/h3&gt;
+&lt;!-- &lt;img src="images/mumbai.jpg" width="300"&gt; --&gt;        &lt;!-- If you want to add images in this otherwise delete this  --&gt;
+&lt;p&gt;India Gate is a war memorial in New Delhi, built in honor of
+Indian soldiers who died in World War I.&lt;/p&gt; `;
+}
+}
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+    </div>
+  </div>
+
+
+  <!-- ── BLOCK 2: Simple Calculator ── -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">
+        <span class="tag tag-html">HTML</span>
+        2. Simple Calculator
+      </span>
+      <button class="copy-btn" onclick="copyBlock(this, 'block2')">Copy</button>
+    </div>
+    <div class="card-body">
+      <pre id="block2">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;Simple Calculator&lt;/title&gt;
+&lt;style&gt;
+body {
+font-family: Arial, sans-serif;
+margin: 40px;
+}
+.calculator {
+width: 300px;
+padding: 20px;
+border: 2px solid #333;
+border-radius: 8px;
+background-color: #f9f9f9;
+}
+input, select, button {
+margin: 10px 0;
+padding: 8px;
+width: 100%;
+}
+#result {
+font-weight: bold;
+margin-top: 15px;
+}
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class="calculator"&gt;
+&lt;h2&gt;Arithmetic Calculator&lt;/h2&gt;
+&lt;input type="number" id="num1" placeholder="Enter first number"&gt;
+&lt;input type="number" id="num2" placeholder="Enter second number"&gt;
+&lt;select id="operation"&gt;
+&lt;option value="add"&gt;Addition (+)&lt;/option&gt;
+&lt;option value="subtract"&gt;Subtraction (-)&lt;/option&gt;
+&lt;option value="multiply"&gt;Multiplication (&times;)&lt;/option&gt;
+&lt;option value="divide"&gt;Division (&divide;)&lt;/option&gt;
+&lt;option value="modulus"&gt;Modulus (%)&lt;/option&gt;
+&lt;/select&gt;
+&lt;button onclick="calculate()"&gt;Calculate&lt;/button&gt;
+&lt;div id="result"&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;script&gt;
+function calculate() {
+let num1 = parseFloat(document.getElementById("num1").value);
+let num2 = parseFloat(document.getElementById("num2").value);
+let operation = document.getElementById("operation").value;
+let result;
+switch(operation) {
+case "add":
+result = num1 + num2;
+break;
+case "subtract":
+result = num1 - num2;
+break;
+case "multiply":
+result = num1 * num2;
+break;
+case "divide":
+result = num1 / num2 ;
+break;
+case "modulus":
+result = num1 % num2;
+break;
+default:
+result = "Invalid operation";
+}
+document.getElementById("result").innerText = "Result: " + result;
+}
+&lt;/script&gt;
+&lt;/body&gt;&lt;/html&gt;</pre>
+    </div>
+  </div>
+
+
+  <!-- ── BLOCK 3: Hide Show (jQuery) ── -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">
+        <span class="tag tag-js">jQuery</span>
+        3. Hide / Show
+      </span>
+      <button class="copy-btn" onclick="copyBlock(this, 'block3')">Copy</button>
+    </div>
+    <div class="card-body">
+      <pre id="block3">&lt;!-- download jquery from https://jquery.com/download/ save as jquery.js --&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;script src="js/jquery.js"&gt;&lt;/script&gt;
+    &lt;script&gt;
+        $(document).ready(function(){
+            $("#b1").click(function(){
+                $("p").hide(1000);
+            });
+            $("#b2").click(function(){
+                $("p").show("fast");
+            });
+        });
+    &lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;button id="b1"&gt;Hide&lt;/button&gt;
+    &lt;button id="b2"&gt;show&lt;/button&gt;
+    &lt;p&gt;This is a paragraph with little content.&lt;/p&gt;
+    &lt;p&gt;This is another small paragraph.&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+    </div>
+  </div>
+
+
+  <!-- ── BLOCK 4: Toggle (jQuery) ── -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">
+        <span class="tag tag-js">jQuery</span>
+        4. Toggle
+      </span>
+      <button class="copy-btn" onclick="copyBlock(this, 'block4')">Copy</button>
+    </div>
+    <div class="card-body">
+      <pre id="block4">&lt;!-- download jquery from https://jquery.com/download/ save as jquery.js --&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;script src="js/jquery.js"&gt;&lt;/script&gt;
+    &lt;script&gt;
+        $(document).ready(function() {
+            $("#b1").click(function() {
+                $("p").toggle();
+                $("p").css("background", "lightgreen");
+            });
+        });
+    &lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;button id="b1"&gt;Toggle Button&lt;/button&gt;
+    &lt;p&gt;This is a paragraph with little content.&lt;/p&gt;
+    &lt;p&gt;This is another small paragraph.&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+    </div>
+  </div>
+
+
+  <!-- ── BLOCK 5: AJAX Weather ── -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">
+        <span class="tag tag-js">AJAX</span>
+        5. Live Weather (AJAX)
+      </span>
+      <button class="copy-btn" onclick="copyBlock(this, 'block5')">Copy</button>
+    </div>
+    <div class="card-body">
+      <pre id="block5">&lt;html&gt;
+&lt;body&gt;
+&lt;h2&gt;Live Weather Data&lt;/h2&gt;
+&lt;input type="text" id="city" placeholder="Enter city name"&gt;
+&lt;button onclick="getWeather()"&gt;Get Weather&lt;/button&gt;
+&lt;div id="result"&gt;&lt;/div&gt;
+&lt;script&gt;
+function getWeather() {
+    var city = document.getElementById("city").value;
+    var apiKey = "ded32799b1c967e9c07594a217abb296"; // Replace API from https://openweathermap.org/api
+    var url = "https://api.openweathermap.org/data/2.5/weather?q=" 
+              + city + "&appid=" + apiKey + "&units=metric";
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function () {
+        if (this.readyState == 4 &amp;&amp; this.status == 200) {
+            var data = JSON.parse(this.responseText);
+            var temp = data.main.temp;
+            var humidity = data.main.humidity;
+            var condition = data.weather[0].description;
+            document.getElementById("result").innerHTML =
+                "&lt;h3&gt;Weather in " + city + "&lt;/h3&gt;" +
+                "Temperature: " + temp + " °C&lt;br&gt;" +
+                "Humidity: " + humidity + " %&lt;br&gt;" +
+                "Condition: " + condition;
+        }
+    };
+    xmlhttp.open("GET", url, true);
+    xmlhttp.send();
+}
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+    </div>
+  </div>
+
+
+  <!-- ── BLOCK 6: Git Steps ── -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">
+        <span class="tag tag-git">GIT</span>
+        6. Git — GitHub Steps
+      </span>
+      <button class="copy-btn" onclick="copyBlock(this, 'block6')">Copy</button>
+    </div>
+    <div class="card-body">
+      <pre id="block6">## 🔹 Step 1: Create Repository on GitHub
+1. Go to GitHub
+2. Click **New Repository**
+3. Enter:
+   * Repository name: **MDMTest**
+   * Check ✔ **Add a README file**
+4. Click **Create Repository**
+
+## 🔹 Step 2: Copy Repository URL
+1. Open your repo (MDMTest)
+2. Click **Code** button
+3. Copy the HTTPS URL (example):
+   ```
+   https://github.com/your-username/MDMTest.git
+   ```
+
+## 🔹 Step 3: Clone Repository to Local System
+1. Open **Command Prompt / Terminal**
+2. Run:
+   ```
+   git clone https://github.com/your-username/MDMTest.git
+   ```
+3. Move into folder:
+   ```
+   cd MDMTest
+   ```
+
+## 🔹 Step 4: Open Project in VS Code
+1. Open Visual Studio Code
+2. Click **File → Open Folder**
+3. Select the **MDMTest** folder
+
+## 🔹 Step 5: Edit ReadMe.md File
+1. Open `README.md`
+2. Add some text like:
+   ```
+   # MDMTest Repository
+   This is my first GitHub update.
+   ```
+3. Save the file (Ctrl + S)
+
+## 🔹 Step 6: Add Changes (Staging)
+In terminal (inside VS Code or CMD):
+```
+git add README.md
+```
+
+## 🔹 Step 7: Commit Changes
+```
+git commit -m "Updated README file"
+```
+
+## 🔹 Step 8: Push Changes to GitHub
+```
+git push origin main
+```</pre>
+    </div>
+  </div>
+
+
+  <!-- ── BLOCK 7: DTD XML ── -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">
+        <span class="tag tag-xml">XML</span>
+        7. DTD XML
+      </span>
+      <button class="copy-btn" onclick="copyBlock(this, 'block7')">Copy</button>
+    </div>
+    <div class="card-body">
+      <pre id="block7">//Step 1: Create Project Folder
+//1. Create a folder (e.g., XML_Project)
+//2. All files will be saved here. 
+//3. Open this folder in VS Code → File → Open Folder
+
+
+//Step 2: Create DTD File 
+//Click New File and write your DTD code and save. 
+//Save file as students.dtd in your folder
+
+&lt;!ELEMENT students (student+)&gt;
+&lt;!ELEMENT student (rollno, name, course, semester, email)&gt;
+
+&lt;!ELEMENT rollno (#PCDATA)&gt;
+&lt;!ELEMENT name (#PCDATA)&gt;
+&lt;!ELEMENT course (#PCDATA)&gt;
+&lt;!ELEMENT semester (#PCDATA)&gt;
+&lt;!ELEMENT email (#PCDATA)&gt;
+
+
+//Step 3: Create XML File
+//i. Click New File and write your xml code and save. 
+//ii. Write following code and save file as students.xml in your folder.
+
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;?xml-stylesheet type="text/xsl" href="students.xsl"?&gt;
+&lt;!DOCTYPE students SYSTEM "students.dtd"&gt;
+
+&lt;students&gt;
+    &lt;student&gt;
+        &lt;rollno&gt;101&lt;/rollno&gt;
+        &lt;name&gt;Rahul Patil&lt;/name&gt;
+        &lt;course&gt;IT&lt;/course&gt;
+        &lt;semester&gt;2&lt;/semester&gt;
+        &lt;email&gt;rahul@example.com&lt;/email&gt;
+    &lt;/student&gt;
+
+    &lt;student&gt;
+        &lt;rollno&gt;102&lt;/rollno&gt;
+        &lt;name&gt;Priya Sharma&lt;/name&gt;
+        &lt;course&gt;EXTC IT&lt;/course&gt;
+        &lt;semester&gt;1&lt;/semester&gt;
+        &lt;email&gt;priya@example.com&lt;/email&gt;
+    &lt;/student&gt;
+&lt;/students&gt;
+
+
+//Step 4: Create XSL File
+//1. Click New File and write your xsl code . 
+//2. Write following code and name this file as students.xsl
+
+
+//Step 6: Check if live server extension is installed in Vs-code.
+
+
+//Step 7: Right click students.xml file and open it with live server. 
+
+
+//Step 8: In browser,your url should be:
+
+//127.0.0.1:5500/students.xml</pre>
+    </div>
+  </div>
+
+
+  <!-- ── BLOCK 8: PHP MySQL ── -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">
+        <span class="tag tag-php">PHP</span>
+        8. PHP MySQL
+      </span>
+      <button class="copy-btn" onclick="copyBlock(this, 'block8')">Copy</button>
+    </div>
+    <div class="card-body">
+      <pre id="block8">//Step1:
+//Start Apache and MYSQL
+//Click on Admin in Apache and MySQL. A webpage will open in the browser. If you see an error check port number. 
+//Check url : http://localhost:8081/
+//http://localhost:8081/phpmyadmin/
+
+//Step 2: Create Database &amp; Table
+//1. Go to: http://localhost:8081/phpmyadmin
+//2. Click New → Create Database
+//Give Name: mydb and click on create
+
+//Step 3: Create table Person with 4 column (ID(INT)(PRIMARY and AI tick), fullname(VARCHAR), email(VAR) and mobileno(VAR)).
+//Make ID as Primary key and make it autoincrement . 
+//Enter details as shown and click on GO.
+
+//Step 3: Create PHP folder
+//1. Go to XAMPP folder:
+//C:\xampp\htdocs\
+//2. Create a new folder: MDM_Program
+
+//Step 4: Create PHP Files (you can use VS code)
+//Open VS code and open folder MDM_Program folder to create 2 files:
+//1. process.php : Paste insert + display + delete code
+//2. db.php : Database configuration
+//3. Index.php : Html code for registration form
+
+//Step 5: Run the Project
+//1. Open browser
+//2. Go to  :      http://localhost:8081/Program/index.php
+//3. Also check database   :  http://localhost:8081/phpmyadmin
+
+//index.php as 
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Registration Form&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h2&gt;Registration Form&lt;/h2&gt;
+&lt;form method="post" action="process.php"&gt;
+    Full Name: &lt;input type="text" name="fullname" required&gt;&lt;br&gt;&lt;br&gt;
+    Email: &lt;input type="email" name="email" required&gt;&lt;br&gt;&lt;br&gt;
+    Mobile No: &lt;input type="text" name="mobile" required&gt;&lt;br&gt;&lt;br&gt;
+    &lt;input type="submit" name="submit" value="Register"&gt;
+&lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+
+//process.php as 
+
+&lt;?php
+include 'db.php';
+
+// INSERT OPERATION
+if (isset($_POST['submit'])) {
+$fullname = $_POST['fullname'];
+$email = $_POST['email'];
+$mobile = $_POST['mobile'];
+$sql = "INSERT INTO Person(fullname, email,mobileno)
+VALUES('$fullname','$email','$mobile')";
+if (mysqli_query($conn, $sql))
+{
+echo "Record inserted successfully";
+}
+else
+{
+echo "Error: " . mysqli_error($conn);
+}
+}
+
+// DELETE OPERATION
+if (isset($_GET['delete_id'])) {
+$delete_id = $_GET['delete_id'];
+$del_sql = "DELETE FROM Person WHERE id='$delete_id'";
+if (mysqli_query($conn, $del_sql)) {
+echo "Record deleted successfully";
+} else {
+    echo "Delete error: " . mysqli_error($conn);
+}
+}
+?&gt;
+
+&lt;hr&gt;
+&lt;h2&gt;Registered Users&lt;/h2&gt;
+&lt;table border="1" cellpadding="10"&gt;
+&lt;tr&gt;
+&lt;th&gt;ID&lt;/th&gt;
+&lt;th&gt;Full Name&lt;/th&gt;
+&lt;th&gt;Email&lt;/th&gt;
+&lt;th&gt;Mobile&lt;/th&gt;
+&lt;th&gt;Action&lt;/th&gt;
+&lt;/tr&gt;
+&lt;?php
+$result = mysqli_query($conn, "SELECT * FROM Person");
+while ($row = mysqli_fetch_assoc($result)) {
+echo "&lt;tr&gt;
+&lt;td&gt;".$row['ID']."&lt;/td&gt;
+&lt;td&gt;".$row['fullname']."&lt;/td&gt;
+&lt;td&gt;".$row['email']."&lt;/td&gt;
+&lt;td&gt;".$row['mobileno']."&lt;/td&gt;
+&lt;td&gt;
+&lt;a href='process.php?delete_id=".$row['ID']."'&gt;Delete&lt;/a&gt;
+&lt;/td&gt;
+&lt;/tr&gt;";
+}
+?&gt;
+&lt;/table&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+
+//db.php
+
+&lt;?php
+$conn = mysqli_connect("localhost", "root", "", "mydb",3307);
+if (!$conn) {
+die("Connection failed: " . mysqli_connect_error());
+}
+?&gt;</pre>
+    </div>
+  </div>
+
+
+  <!-- ── BLOCK 9: React ── -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">
+        <span class="tag tag-react">React</span>
+        9. React — Hello World
+      </span>
+      <button class="copy-btn" onclick="copyBlock(this, 'block9')">Copy</button>
+    </div>
+    <div class="card-body">
+      <pre id="block9">//Step 1:
+//Open VS Code → Open your program folder →Press Ctrl + Shift + P
+//Type: Terminal: Select Default Profile
+//Select: Command Prompt
+
+//Step 2: Create React App
+//Open new Terminal → run following command:
+//npx create-react-app my-app
+//If it ask to install any package press 'y' and wait till installation completes.
+
+//Step 3: Open Project in VS Code
+//Now type following command in same terminal :
+//cd my-app
+//code .
+
+//Step 4: Write your first react app
+//Go to: src/App.js
+//Delete existing code
+//Write down the provide code in APP.js
+
+//Code :
+
+import React from "react";
+
+function App() {
+  return (
+    &lt;div&gt;
+      &lt;h1&gt;Hello World&lt;/h1&gt;
+    &lt;/div&gt;
+  );
+}
+
+export default App;
+
+//Step 6: Run your Program
+//Open terminal and type : npm start</pre>
+    </div>
+  </div>
+
+
+</div><!-- /grid -->
+
+<footer>
+  <p>📋 Code Notes &nbsp;·&nbsp; Click any Copy button to grab the code</p>
+</footer>
+
+<!-- ══════════════════════════════════
+     JAVASCRIPT — Copy Logic
+══════════════════════════════════ -->
+<script>
+  // -------------------------------------------------
+  // copyBlock(btn, id)
+  //   btn  — the button element that was clicked
+  //   id   — the id of the <pre> element to copy
+  // -------------------------------------------------
+  function copyBlock(btn, id) {
+    // Get the raw text content of the target <pre>
+    const content = document.getElementById(id).innerText;
+
+    // Use the Clipboard API to write it
+    navigator.clipboard.writeText(content).then(function () {
+      // Show "Copied!" feedback
+      btn.textContent = "✓ Copied!";
+      btn.classList.add("copied");
+
+      // Reset button after 2 seconds
+      setTimeout(function () {
+        btn.textContent = "Copy";
+        btn.classList.remove("copied");
+      }, 2000);
+    }).catch(function (err) {
+      // Fallback if clipboard API fails (e.g., non-secure context)
+      alert("Could not copy: " + err);
+    });
+  }
+
+  // -------------------------------------------------
+  // Copy All — collects every block and joins them
+  // -------------------------------------------------
+  document.getElementById("copyAllBtn").addEventListener("click", function () {
+    const blockIds = ["block1","block2","block3","block4","block5",
+                      "block6","block7","block8","block9"];
+
+    const allText = blockIds.map(function (id, i) {
+      return "=== " + (i + 1) + ". " + id.replace("block","Block ") + " ===\n"
+           + document.getElementById(id).innerText;
+    }).join("\n\n");
+
+    navigator.clipboard.writeText(allText).then(function () {
+      const btn = document.getElementById("copyAllBtn");
+      btn.textContent = "✓ All Copied!";
+      setTimeout(function () { btn.textContent = "⊕ Copy All"; }, 2000);
+    });
+  });
+</script>
+
+</body>
+</html>
