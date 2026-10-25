@@ -3,31 +3,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>MWC_Practicals.ipynb</title>
 <style>
-:root{--bg:#383838;--bar:#333;--cell:#1e1e1e;--line:#4a4a4a;--tx:#e8eaed;--mut:#9aa0a6;--gut:#4a4a4a;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:dark}
-html{scroll-padding-top:env(safe-area-inset-top,0px)}
+:root{--bg:#131314;--tx:#e8eaed;--mut:#9aa0a6;box-sizing:border-box;color-scheme:dark}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.5 Roboto,Arial,sans-serif}
-.top{background:var(--bar);border-bottom:1px solid var(--line);padding:10px 16px 0;display:flex;flex-wrap:wrap;align-items:center;gap:8px 20px}
+body{margin:0;background:#131314;color:var(--tx);font:14px/1.5 Roboto,Arial,sans-serif;padding-bottom:70px}
 .logo{font:700 26px Arial;color:#f9ab00;letter-spacing:-3px;padding-right:6px}
-.ttl{font-size:20px}.menu{display:flex;flex-wrap:wrap;gap:16px;font-size:14px;width:100%;padding:2px 0 8px 0}
-.menu u{color:var(--mut)}
-.right{margin-left:auto;display:flex;gap:18px;color:var(--tx)}
-.tool{background:var(--bar);border-bottom:1px solid var(--line);padding:8px 16px;display:flex;gap:18px;font-size:15px}
-.main{max-width:980px;margin:0 auto;padding:14px 12px 60px}
-.txt{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:10px 12px 10px 66px;margin-top:18px}
-.txt h2{margin:0 0 4px;font:500 20px Roboto,Arial}.txt p{margin:0;color:#ccc;white-space:pre-line}
-.cp{flex:none;background:#1a73e8;color:#fff;border:0;border-radius:18px;padding:7px 16px;font:500 13px Roboto,Arial;cursor:pointer}
-.cp:hover{background:#4a8df0}.cp.ok{background:#188038}
-.cell{display:flex;background:var(--cell);border-radius:4px;overflow:hidden;border:1px solid #2a2a2a}
-.gut{flex:none;width:56px;background:#2b2b2b;display:flex;flex-direction:column;align-items:center;padding-top:10px;gap:6px;color:var(--mut);font:12px monospace}
-.run{width:30px;height:30px;border-radius:50%;background:#fff;color:#222;border:0;cursor:pointer;font-size:12px}
-pre{margin:0;padding:12px 14px;overflow-x:auto;font:13px/1.55 "Roboto Mono",Consolas,monospace;color:#d4d4d4;flex:1}
-.c{color:#6a9955;font-style:normal}.s{color:#ce9178;font-style:normal}.k{color:#569cd6;font-style:normal}.n{color:#b5cea8;font-style:normal}
-.st{padding:4px 14px 0 66px;color:var(--mut);font-size:12px}.st b{color:#34a853}
-body{background:#131314;padding-bottom:70px}
 .hd{display:flex;align-items:flex-start;gap:12px;padding:10px 22px 4px}
 .hm{flex:1;min-width:0}.ttl{font-size:20px;display:block;line-height:1.3}
-.menu{width:auto;padding:4px 0 0;gap:20px;font-size:15px}
+.menu{display:flex;flex-wrap:wrap;gap:20px;font-size:15px;padding:4px 0 0}
 .rt{display:flex;align-items:center;gap:22px;font-size:20px;color:#e3e3e3}
 .sh{background:#0b4a8f;color:#d3e3fd;border:0;border-radius:24px;padding:12px 22px;font:500 16px Roboto,Arial}
 .av{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#8ab4f8,#c58af9);color:#131314;font:500 18px/40px Arial;text-align:center}
@@ -36,21 +18,24 @@ body{background:#131314;padding-bottom:70px}
 .ram{color:#e3e3e3;font-size:13px}.ram b{color:#34a853;font-size:18px}
 .wrap{display:flex;gap:12px;padding:6px 14px 0;align-items:flex-start}
 .side{width:60px;flex:none;background:#1e1f20;border-radius:30px;padding:18px 0;display:flex;flex-direction:column;align-items:center;gap:24px;font-size:20px;color:#e3e3e3}
-.main{max-width:none;margin:0;flex:1;min-width:0;background:#27282b;border-radius:28px;padding:22px 24px 40px;min-height:70vh}
-.txt{padding:6px 0 6px 56px;margin-top:10px}
-.cp{background:#a8c7fa;color:#062e6f}.cp:hover{background:#c2d9fc}.cp.ok{background:#6dd58c;color:#07351a}
-.cell{background:none;border:0;border-radius:0;overflow:visible;margin-top:24px;align-items:flex-start;gap:6px}
+.main{flex:1;min-width:0;background:#27282b;border-radius:28px;padding:22px 24px 40px;min-height:70vh}
+.txt{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:6px 0 6px 56px;margin-top:18px}
+.txt>div{flex:1;min-width:0}
+.txt h2{margin:0 0 4px;font:500 20px Roboto,Arial}.txt p{margin:0;color:#ccc;white-space:pre-line}
+.lb{display:inline-block;background:#3c4043;color:#a8c7fa;font:500 12px Roboto,Arial;padding:3px 12px;border-radius:12px;margin:2px 0 6px;letter-spacing:.3px}
+.cp{flex:none;background:#a8c7fa;color:#062e6f;border:0;border-radius:18px;padding:7px 16px;font:500 13px Roboto,Arial;cursor:pointer}
+.cp:hover{background:#c2d9fc}.cp.ok{background:#6dd58c;color:#07351a}
+.cell{display:flex;margin-top:12px;align-items:flex-start;gap:6px}
 .idx{flex:none;width:50px;text-align:right;color:#c4c7c5;font:11px/1.5 monospace}.idx b{color:#34a853;font-weight:400}
 .box{flex:1;min-width:0;border:1px solid #5f6368;border-radius:10px;position:relative}
 .ftb{position:absolute;top:-16px;right:14px;background:#27282b;padding:2px 12px;display:flex;gap:18px;color:#c4c7c5;font-size:16px}
 .cb{display:flex;align-items:flex-start}
-.run{margin:12px 0 0 12px;flex:none;background:#fff;color:#1b1b1b}
-pre{color:#e3e3e3;padding:12px 14px 14px 20px;background-image:linear-gradient(#5f6368,#5f6368);background-size:1px 100%;background-repeat:no-repeat;background-position:calc(20px + 80ch) 0;background-attachment:local}
-.out{border-top:1px solid #444746;padding:12px 18px;display:flex;gap:26px;color:#e3e3e3;font-size:15px}
-.c{color:#81c995}.s{color:#f4a77a}.k{color:#d7aefb}.n{color:#a5d6a7}
-.foot{position:fixed;left:0;right:0;bottom:0;min-height:46px;padding:0 24px env(safe-area-inset-bottom,0px);background:#1b1c1d;display:flex;align-items:center;justify-content:space-between;gap:20px;font-size:15px;z-index:5}
+.run{margin:12px 0 0 12px;flex:none;width:30px;height:30px;border-radius:50%;border:0;cursor:pointer;font-size:12px;background:#fff;color:#1b1b1b}
+pre{margin:0;padding:12px 14px 14px 20px;overflow-x:auto;font:13px/1.55 "Roboto Mono",Consolas,monospace;color:#e3e3e3;flex:1}
+.c{color:#81c995;font-style:normal}.s{color:#f4a77a;font-style:normal}.k{color:#d7aefb;font-style:normal}.n{color:#a5d6a7;font-style:normal}
+.foot{position:fixed;left:0;right:0;bottom:0;min-height:46px;padding:0 24px;background:#1b1c1d;display:flex;align-items:center;justify-content:space-between;gap:20px;font-size:15px;z-index:5}
 .foot span{display:flex;gap:26px;align-items:center}
-.ai{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(10px + env(safe-area-inset-bottom,0px));width:44px;height:44px;border-radius:50%;background:#4285f4;color:#fff;display:flex;align-items:center;justify-content:center;font-size:22px;z-index:6}
+.ai{position:fixed;left:50%;transform:translateX(-50%);bottom:10px;width:44px;height:44px;border-radius:50%;background:#4285f4;color:#fff;display:flex;align-items:center;justify-content:center;font-size:22px;z-index:6}
 @media(max-width:700px){.side,.sh,.idx{display:none}.wrap{padding:6px 6px}.main{padding:14px 10px}.txt{padding-left:4px}.hd{padding:10px 12px 4px}.pill{gap:14px;font-size:14px}.foot{padding:0 12px}}
 </style></head><body>
 <div class="hd"><span class="logo">CO</span><div class="hm"><span class="ttl">▲ MWC_Practicals.ipynb ☆ ☁</span><div class="menu"><span>File</span><span>Edit</span><span>View</span><span>Insert</span><span>Runtime</span><span>Tools</span><span>Help</span></div></div><div class="rt"><span>💬</span><span>⚙</span><button class="sh">🔒 Share</button><span class="av">K</span></div></div>
@@ -98,7 +83,7 @@ print('FSPL @@D2@ m,', @F1@, 'MHz =', round(fspl(@D2@, @F1@), 2), 'dB')
 # Q3. Effect of doubling distance? A: +6 dB loss. Doubling frequency also gives +6 dB.
 # Q4. Why is lower frequency preferred for coverage? A: Lower path loss, so longer range.
 # Q5. Unit of path loss? A: dB (ratio of transmitted to received power).`;
-const gen=(f1,f2,d1,d2)=>FS.replace(/@@D1@/g,'@'+d1).replace(/@F1@/g,f1).replace(/@F2@/g,f2).replace(/@D1@/g,d1).replace(/@D2@/g,d2);
+const gen=(f1,f2,d1,d2)=>FS.replace(/@@D1@/g,'@'+d1).replace(/@@D2@/g,'@'+d2).replace(/@F1@/g,f1).replace(/@F2@/g,f2).replace(/@D1@/g,d1).replace(/@D2@/g,d2);
 
 const Q=[
 {t:"Q1. Digital communication system (Tx, Channel, Rx)",q:"Simulate Tx, AWGN channel and Rx in Python:\nI. Generate a clean sine wave at the transmitter.\nII. Add AWGN to simulate channel noise.\nIII. Apply a sliding-window moving-average filter at the receiver.\nIV. Plot transmitted, noisy and recovered signals in three separate graphs.",code:String.raw`import numpy as np
@@ -309,20 +294,122 @@ for r in rows: print(f'{r[0]:30}{r[1]:24}{r[2]:13}{r[3]}')
 # Q4. Why is the wrong-password laptop rejected? A: It derives a different key, so the handshake fails.
 # Q5. Personal vs Enterprise? A: Personal uses a shared password; Enterprise uses 802.1X/RADIUS with per-user credentials.`}
 ];
+const X=[
+{th:"A digital communication system has a Transmitter (Tx), a Channel and a Receiver (Rx). AWGN adds zero-mean Gaussian noise with a flat power spectrum: y(t) = x(t) + n(t), and SNR(dB) = 10·log10(Ps/Pn).\nA moving-average filter of window W replaces each sample by the mean of W neighbouring samples, y[n] = (1/W)·Σ x[n-k]. It acts as a low-pass filter: random noise variance falls by about 1/W while the slow sine is kept.",
+out:String.raw`(No console output - three separate figures are produced)
+Figure 1: Transmitted signal  - clean 5 Hz sine, amplitude +/-1, 5 cycles in 1 s.
+Figure 2: Noisy channel output - same sine with random fluctuations (SNR = 10 dB).
+Figure 3: Recovered signal    - smooth sine close to the original, noise strongly reduced.`,
+con:"The sine wave was transmitted, corrupted by AWGN in the channel and recovered at the receiver with a sliding-window moving-average filter. The filter greatly reduced the noise, so the recovered signal closely matches the transmitted one. A larger window removes more noise but smooths (distorts) the signal more."},
+{th:"Frequency reuse means using the same channel set in different cells that are far enough apart. A cluster of N cells (N = i² + ij + j²) shares all available channels.\nMinimum co-channel reuse distance: D = R·√(3N), where R is the cell radius. Reuse ratio q = D/R = √(3N).\nLarger N gives larger D (less co-channel interference) but fewer channels per cell (lower capacity).",
+out:String.raw`N=7, (i,j)=(2,1), R=1.0 km -> D = 4.583 km, D/R = 4.583
+Figure: hexagonal cell layout; cells marked 'A' use the same channel; red dashed lines join the central cell to the six first-tier co-channel cells, each labelled D = 4.58 km.`,
+con:"For N = 7 and R = 1 km the minimum co-channel reuse distance is D = R·√(3N) = 4.58 km (q = 4.58). The plot shows the six nearest co-channel cells at this distance. A larger cluster size increases D and reduces interference, but decreases capacity."},
+{th:"The 2.4 GHz Wi-Fi band has channels spaced 5 MHz apart, each about 20 MHz wide, so only channels 1, 6 and 11 are non-overlapping.\nRSSI (dBm) is the received signal strength: -30 to -50 excellent, -50 to -67 good, -67 to -80 fair, below -80 weak.\nCo-channel networks share airtime (CSMA/CA); partially overlapping channels corrupt each other's frames and are worse.",
+out:String.raw`SSID             Ch   RSSI  Width
+MWC_LAB_WiFi      6    -45     20
+Hostel_5          1    -60     20
+CSE_Lab           1    -72     20
+Library_AP        6    -58     20
+Staff            11    -66     20
+Guest            11    -80     20
+Net_X             3    -75     20
+Home              9    -85     20
+Ch 1: networks = 2, strongest competing RSSI = -60 dBm
+Ch 6: networks = 2, strongest competing RSSI = -58 dBm
+Ch 11: networks = 2, strongest competing RSSI = -66 dBm
+Co-channel with lab: ['Library_AP']
+Overlapping with lab: ['Net_X', 'Home']
+Recommended channel: 6
+Figure: bar graph, Channels 1, 6, 11 = 2, 2, 2 networks   (sample data - replace with your readings)`,
+con:"The laboratory network and its neighbours were scanned and compared on channels 1, 6 and 11. Co-channel and overlapping networks were identified from their channel numbers. The channel with the fewest competing networks and the weakest competing RSSI is recommended, because it gives the least interference and best throughput. (Update the numbers with your own observations.)"},
+{th:"RTT is the time for a packet to reach the destination and for its reply to return. Throughput = total bits transferred / time taken (bps). Total packet size = payload + headers (ICMP 8 B + IP 20 B + Ethernet 14 B).\nTransmission delay = L/R, so larger packets take longer. Payloads above the 1500-byte MTU are fragmented, adding more delay. The first ping is slower because of ARP resolution.",
+net:"Laptop0 (WMP300N wireless card, DHCP)  ~~ SSID MWC_LAB ~~  Wireless Router0 (192.168.0.1)  --- Copper Straight-Through ---  Server0 (192.168.0.10)",
+out:String.raw`Default (32 B): min=3 ms, max=12 ms, avg=6 ms
+1500 B: min=8 ms, max=25 ms, avg=14 ms
+Trial 1: size=2042 B, RTT=12.0 ms, throughput=1361333 bps = 1361.33 kbps
+Trial 2: size=2042 B, RTT=14.0 ms, throughput=1166857 bps = 1166.86 kbps
+Trial 3: size=2042 B, RTT=11.0 ms, throughput=1485091 bps = 1485.09 kbps
+Average throughput = 1337.76 kbps, spread = 318.23 kbps   (sample values - use your Packet Tracer readings)`,
+con:"The wireless LAN was configured and connectivity verified using ping. RTT for 1500-byte packets was higher than for the default packet, and the 2000-byte payload (fragmented) took longer still, so latency rises with packet size. Throughput varied slightly across the three trials because of wireless medium access and ARP."},
+{th:"Free-space path loss (FSPL) is the power lost by a signal travelling in line of sight: FSPL(dB) = 20·log10(d_km) + 20·log10(f_MHz) + 32.44.\nLoss grows logarithmically with distance and frequency: doubling either one adds about 6 dB. Lower frequencies have less loss, hence longer range.",
+out:String.raw`FSPL @10 m, 700 MHz = 49.34 dB
+FSPL @10 m, 900 MHz = 51.52 dB
+FSPL @400 m, 700 MHz = 81.38 dB
+FSPL @800 m, 700 MHz = 87.4 dB
+
+Distance (m) | 700 MHz | 900 MHz        Frequency (MHz) | 400 m  | 800 m
+1            | 29.34   | 31.52          700             | 81.38  | 87.40
+10           | 49.34   | 51.52          900             | 83.57  | 89.59
+50           | 63.32   | 65.50
+Figures: (1) FSPL vs distance, two rising curves; (2) FSPL vs frequency, two nearly flat rising lines.`,
+con:"Path loss increases with distance (about +6 dB per doubling) and with frequency. The 900 MHz curve lies 2.2 dB above the 700 MHz curve (20·log10(900/700)). Over 700-900 MHz the loss changes by only ~2.2 dB, whereas moving from 400 m to 800 m adds 6 dB, so distance has the larger effect."},
+{th:"Free-space path loss (FSPL) is the power lost by a signal travelling in line of sight: FSPL(dB) = 20·log10(d_km) + 20·log10(f_MHz) + 32.44.\nLoss grows logarithmically with distance and frequency: doubling either one adds about 6 dB. Higher frequencies (1800/2100 MHz) suffer more loss than low bands, so they need smaller cells.",
+out:String.raw`FSPL @10 m, 1800 MHz = 57.55 dB
+FSPL @10 m, 2100 MHz = 58.88 dB
+FSPL @600 m, 1800 MHz = 93.11 dB
+FSPL @1200 m, 1800 MHz = 99.13 dB
+
+Distance (m) | 1800 MHz | 2100 MHz       Frequency (MHz) | 600 m  | 1200 m
+1            | 37.55    | 38.88          1800            | 93.11  | 99.13
+10           | 57.55    | 58.88          2100            | 94.45  | 100.47
+50           | 71.52    | 72.86
+Figures: (1) FSPL vs distance, two rising curves; (2) FSPL vs frequency, two nearly flat rising lines.`,
+con:"Path loss increases with distance (about +6 dB per doubling) and with frequency. The 2100 MHz curve is 1.34 dB above the 1800 MHz curve (20·log10(2100/1800)). Over 1800-2100 MHz the change is only ~1.3 dB, while doubling the distance from 600 m to 1200 m adds 6 dB, so distance dominates."},
+{th:"RSRP (Reference Signal Received Power) measures LTE coverage. RSRQ = N·RSRP/RSSI measures quality, including interference and load. SINR is signal power divided by interference plus noise and decides data rate and modulation.\nTypical grades - RSRP: >= -80 excellent, -80 to -90 good, -90 to -100 fair, < -100 poor. RSRQ: >= -10 excellent, -10 to -15 good, -15 to -20 fair. SINR: >= 20 excellent, 13-20 good, 0-13 fair, < 0 poor.",
+out:String.raw`Network type: 4G (LTE)
+Reading 1 (t=0 min): RSRP=-92 dBm, RSRQ=-11 dB, SINR=14 dB
+Reading 2 (t=1 min): RSRP=-95 dBm, RSRQ=-12 dB, SINR=12 dB
+Reading 3 (t=2 min): RSRP=-93 dBm, RSRQ=-11 dB, SINR=13 dB
+Average RSRP=-93.3 dBm, RSRQ=-11.3 dB, SINR=13.0 dB
+RSRP : Fair
+RSRQ : Good
+SINR : Good   (sample values - use your app readings)`,
+con:"The 4G network showed an average RSRP of -93.3 dBm (fair coverage), RSRQ of -11.3 dB (good quality) and SINR of 13 dB (good). The signal is fair-to-good, enough for browsing and video. RSRP indicates coverage, RSRQ indicates quality and SINR indicates the achievable data rate."},
+{th:"WPA2-Personal uses a pre-shared key (PSK); a 4-way handshake derives unique session keys and AES-CCMP encrypts every frame, so only users with the password can join and eavesdropping is prevented.\nMAC address filtering permits only listed hardware addresses, adding device-level authorization. It can be spoofed, so it is used together with WPA2.",
+net:"Laptop1 (authorized)  ~~ SSID MWC_LAB ~~  Wireless Router0 (WPA2-PSK / AES, MAC filter)  ~~ SSID MWC_LAB ~~  Laptop2 (unauthorized)",
+out:String.raw`Security stage                Laptop                  Connection   Ping
+Open network (no security)    Laptop1                 Connected    Success
+Open network (no security)    Laptop2                 Connected    Success
+WPA2-PSK (correct password)   Laptop1                 Connected    Success
+WPA2-PSK (wrong password)     Laptop2                 Rejected     Failed (request timed out)
+WPA2 + MAC filter             Laptop1 (authorized)    Connected    Success
+WPA2 + MAC filter             Laptop2 (unauthorized)  Rejected     Failed (request timed out)`,
+con:"The WLAN with SSID MWC_LAB was configured and pings succeeded on the open network. After enabling WPA2-Personal (AES), only the laptop with the correct password MWC@12345 connected. With MAC filtering added, only the authorized laptop was allowed. WPA2 provides encryption and authentication, and MAC filtering adds device-level control, together improving wireless security."}
+];
+
+/* ---- build ONE copyable block: Theory / Program / Output / Conclusion (all non-program parts as # comments) ---- */
+function wrap(s,w){return s.split('\n').flatMap(l=>{if(l.length<=w)return [l];const o=[];let cur='';l.split(' ').forEach(x=>{if((cur?cur+' '+x:x).length>w){o.push(cur);cur=x}else cur=cur?cur+' '+x:x});o.push(cur);return o})}
+const cm=(s,w=95)=>wrap(s,w).map(l=>l?'# '+l:'#').join('\n');
+const bar='# '+'='.repeat(70);
+const sect=n=>bar+'\n# '+n+'\n'+bar;
+function full(i){
+ const x=Q[i],e=X[i],pt=(i==3||i==7),p=[];
+ p.push(sect(x.t));
+ p.push(cm('QUESTION:\n'+x.q));
+ if(e.th)p.push(sect('THEORY (Optional)')+'\n'+cm(e.th));
+ let prog=sect(pt?'PACKET TRACER NETWORK STEPS + CALCULATION PROGRAM':'PYTHON PROGRAM');
+ if(e.net)prog+='\n'+cm('NETWORK (TOPOLOGY): '+e.net);
+ p.push(prog+'\n\n'+x.code);
+ p.push(sect('OUTPUT / OBSERVATION TABLE')+'\n'+cm(e.out,1e9));
+ p.push(sect('CONCLUSION')+'\n'+cm(e.con));
+ return p.join('\n\n')+'\n';
+}
+
 const nb=document.getElementById('nb');
 const tick=()=>{document.getElementById('clk').textContent=new Date().toLocaleTimeString([],{hour:'numeric',minute:'2-digit'})};tick();setInterval(tick,30000);
-function hl(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/(#.*)|((?:f|r)?"[^"\n]*"|(?:f|r)?'[^'\n]*')|\b(import|from|as|def|for|in|if|else|elif|return|print|True|False|None|and|or|not|while|range|lambda|continue|next|lambda)\b|\b(\d+\.?\d*)\b/g,
+function hl(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/(#.*)|((?:f|r)?"[^"\n]*"|(?:f|r)?'[^'\n]*')|\b(import|from|as|def|for|in|if|else|elif|return|print|True|False|None|and|or|not|while|range|lambda|continue|next)\b|\b(\d+\.?\d*)\b/g,
 (m,c,s,k,n)=>c?'<i class=c>'+m+'</i>':s?'<i class=s>'+m+'</i>':k?'<i class=k>'+m+'</i>':'<i class=n>'+m+'</i>');}
 async function copy(text){try{await navigator.clipboard.writeText(text);return 1}catch(e){const a=document.createElement('textarea');a.value=text;a.style.cssText='position:fixed;opacity:0';document.body.appendChild(a);a.select();let ok=false;try{ok=document.execCommand('copy')}catch(x){}a.remove();return ok}}
 Q.forEach((x,i)=>{
+ const code=full(i);
  const t=document.createElement('div');t.className='txt';
- t.innerHTML='<div><h2></h2><p></p></div><button class="cp">⧉ Copy code</button>';
+ t.innerHTML='<div><h2></h2><span class="lb">Given Question</span><p></p></div><button class="cp">⧉ Copy code</button>';
  t.querySelector('h2').textContent=x.t;t.querySelector('p').textContent=x.q;
  const c=document.createElement('div');c.className='cell';
- c.innerHTML='<div class="idx">['+(i+1)+']<br><b>✓</b> 0s</div><div class="box"><div class="ftb"><span>↑</span><span>↓</span><span>✎</span><span>✕</span><span>⋮</span></div><div class="cb"><button class="run" title="Copy code">▶</button><pre></pre></div><div class="out"><span>⋯</span><span>Show hidden output</span></div></div>';
- c.querySelector('pre').innerHTML=hl(x.code);
- const st=document.createElement('div');st.className='st';st.innerHTML='<b>✓</b> 0s';
- const go=async b=>{const ok=await copy(x.code);const cp=t.querySelector('.cp');cp.textContent=ok?'✓ Copied!':'Press Ctrl+C';cp.classList.toggle('ok',!!ok);setTimeout(()=>{cp.textContent='⧉ Copy code';cp.classList.remove('ok')},1800)};
+ c.innerHTML='<div class="idx">['+(i+1)+']<br><b>✓</b> 0s</div><div class="box"><div class="ftb"><span>↑</span><span>↓</span><span>✎</span><span>✕</span><span>⋮</span></div><div class="cb"><button class="run" title="Copy code">▶</button><pre></pre></div></div>';
+ c.querySelector('pre').innerHTML=hl(code);
+ const go=async()=>{const ok=await copy(code);const cp=t.querySelector('.cp');cp.textContent=ok?'✓ Copied!':'Press Ctrl+C';cp.classList.toggle('ok',!!ok);setTimeout(()=>{cp.textContent='⧉ Copy code';cp.classList.remove('ok')},1800)};
  t.querySelector('.cp').onclick=go;c.querySelector('.run').onclick=go;
  nb.append(t,c);
 });
