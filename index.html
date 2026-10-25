@@ -46,71 +46,48 @@ pre{margin:0;padding:12px 14px 14px 20px;overflow-x:auto;font:13px/1.55 "Roboto 
 const FS=String.raw`import numpy as np
 import matplotlib.pyplot as plt
 
-# ---------- Free-space path loss ----------
-# FSPL (dB) = 20*log10(d_km) + 20*log10(f_MHz) + 32.44
-def fspl(d_m, f_mhz):
-    return 20*np.log10(d_m/1000) + 20*np.log10(f_mhz) + 32.44
-
 # I & II. Path loss vs distance (1 m to 50 m) at @F1@ MHz and @F2@ MHz
 d = np.arange(1, 51)
-plt.figure(figsize=(7,4))
-for f in (@F1@, @F2@):
-    plt.plot(d, fspl(d, f), label=f'{f} MHz')
-plt.xlabel('Distance (m)'); plt.ylabel('Path loss (dB)')
-plt.title('FSPL vs Distance'); plt.grid(True); plt.legend(); plt.show()
+for f in [@F1@, @F2@]:
+    plt.plot(d, 32.44 + 20*np.log10(d/1000) + 20*np.log10(f), label=f'{f} MHz')
+plt.title('Path Loss vs Distance')
+plt.xlabel('Distance (m)')
+plt.ylabel('Path Loss (dB)')
+plt.legend()
+plt.grid()
+plt.show()
 
 # III & IV. Path loss vs frequency (@F1@ to @F2@ MHz) at @D1@ m and @D2@ m
 f = np.arange(@F1@, @F2@ + 1)
-plt.figure(figsize=(7,4))
-for dist in (@D1@, @D2@):
-    plt.plot(f, fspl(dist, f), label=f'{dist} m')
-plt.xlabel('Frequency (MHz)'); plt.ylabel('Path loss (dB)')
-plt.title('FSPL vs Frequency'); plt.grid(True); plt.legend(); plt.show()
+for d in [@D1@, @D2@]:
+    plt.plot(f, 32.44 + 20*np.log10(d/1000) + 20*np.log10(f), label=f'{d} m')
+plt.title('Path Loss vs Frequency')
+plt.xlabel('Frequency (MHz)')
+plt.ylabel('Path Loss (dB)')
+plt.legend()
+plt.grid()
+plt.show()
 
-print('FSPL @10 m,', @F1@, 'MHz =', round(fspl(10, @F1@), 2), 'dB')
-print('FSPL @10 m,', @F2@, 'MHz =', round(fspl(10, @F2@), 2), 'dB')
-print('FSPL @@D1@ m,', @F1@, 'MHz =', round(fspl(@D1@, @F1@), 2), 'dB')
-print('FSPL @@D2@ m,', @F1@, 'MHz =', round(fspl(@D2@, @F1@), 2), 'dB')
-
-# V. COMMENTS / CONCLUSION
-# - Path loss grows with log of distance: doubling distance adds ~6 dB.
-# - Path loss grows with log of frequency: the higher frequency has more loss at the same distance.
-# - Distance has the larger effect; curves are logarithmic (steep at first, then flatten).
-# - The two frequency curves are parallel; the gap is 20*log10(f2/f1) dB.
 # VIVA Q&A
 # Q1. What is FSPL? A: Power loss of a signal travelling in free space (line of sight, no obstacles).
 # Q2. Why is loss higher at higher frequency? A: Smaller antenna aperture (wavelength = c/f), so less power is captured.
 # Q3. Effect of doubling distance? A: +6 dB loss. Doubling frequency also gives +6 dB.
 # Q4. Why is lower frequency preferred for coverage? A: Lower path loss, so longer range.
 # Q5. Unit of path loss? A: dB (ratio of transmitted to received power).`;
-const gen=(f1,f2,d1,d2)=>FS.replace(/@@D1@/g,'@'+d1).replace(/@@D2@/g,'@'+d2).replace(/@F1@/g,f1).replace(/@F2@/g,f2).replace(/@D1@/g,d1).replace(/@D2@/g,d2);
+const gen=(f1,f2,d1,d2)=>FS.replace(/@F1@/g,f1).replace(/@F2@/g,f2).replace(/@D1@/g,d1).replace(/@D2@/g,d2);
 
 const Q=[
 {t:"Q1. Digital communication system (Tx, Channel, Rx)",q:"Simulate Tx, AWGN channel and Rx in Python:\nI. Generate a clean sine wave at the transmitter.\nII. Add AWGN to simulate channel noise.\nIII. Apply a sliding-window moving-average filter at the receiver.\nIV. Plot transmitted, noisy and recovered signals in three separate graphs.",code:String.raw`import numpy as np
 import matplotlib.pyplot as plt
-
-fs, f = 1000, 5                       # sampling rate (Hz), signal frequency (Hz)
-t = np.arange(0, 1, 1/fs)
-
-# I. Transmitter: clean sine wave
-tx = np.sin(2*np.pi*f*t)
-
-# II. Channel: AWGN (zero-mean Gaussian noise) at chosen SNR
-snr_db = 10
-noise_power = np.mean(tx**2) / 10**(snr_db/10)
-noisy = tx + np.sqrt(noise_power) * np.random.randn(len(t))
-
-# III. Receiver: sliding-window moving average (window = W samples)
-W = 25
-rx = np.convolve(noisy, np.ones(W)/W, mode='same')
-
-# IV. Three separate graphs
-for sig, title, col in [(tx, 'Transmitted signal', 'b'),
-                        (noisy, 'Noisy channel output (AWGN)', 'r'),
-                        (rx, 'Recovered signal (moving average)', 'g')]:
-    plt.figure(figsize=(8,3))
-    plt.plot(t, sig, col); plt.title(title)
-    plt.xlabel('Time (s)'); plt.ylabel('Amplitude'); plt.grid(True); plt.show()
+t = np.linspace(0, 1, 500)
+tx = np.sin(2*np.pi*5*t)
+noise = tx + np.random.normal(0, 0.3, len(t))
+rx = np.convolve(noise, np.ones(10)/10, mode='same')
+for s, title in [(tx, 'Transmitted'), (noise, 'Noisy Channel'), (rx, 'Recovered')]:
+    plt.figure()
+    plt.plot(t, s)
+    plt.title(title)
+    plt.show()
 
 # VIVA Q&A
 # Q1. What is AWGN? A: Noise added to the signal, Gaussian-distributed, flat (white) power spectrum.
@@ -120,37 +97,17 @@ for sig, title, col in [(tx, 'Transmitted signal', 'b'),
 # Q5. Name another filter. A: Butterworth / FIR low-pass filter.`},
 {t:"Q2. Cellular frequency reuse",q:"Simulate cellular frequency reuse:\nI. Define cluster size N and cell radius R.\nII. Calculate the minimum co-channel reuse distance.\nIII. Plot and label hexagonal cells using the same channel, showing distance between co-channel cell centres.",code:String.raw`import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib.patches import RegularPolygon
-
-# I. Inputs (change as given in the question). N = i^2 + i*j + j^2
-N, R = 7, 1.0                         # cluster size, cell radius (km)
-i, j = next((a, b) for a in range(6) for b in range(a+1) if a*a + a*b + b*b == N)
-
-# II. Co-channel reuse distance: D = R*sqrt(3N)
-D = R*np.sqrt(3*N)
-print(f'N={N}, (i,j)=({i},{j}), R={R} km -> D = {D:.3f} km, D/R = {D/R:.3f}')
-
-# III. Plot hexagonal cells (pointy-top, centre spacing = sqrt(3)*R)
-u = np.sqrt(3)*R*np.array([1, 0])
-v = np.sqrt(3)*R*np.array([np.cos(np.pi/3), np.sin(np.pi/3)])
-fig, ax = plt.subplots(figsize=(8,8))
-co = []
-K = 2*(i+j) + 1
-for a in range(-K, K+1):
-    for b in range(-K, K+1):
-        c = a*u + b*v
-        if np.hypot(*c) > 1.25*D + R: continue
-        # same channel as centre cell if (a,b) lies in the lattice generated by (i,j) & (-j,i+j)
-        same = ((a*(i+j) + b*j) % N == 0) and ((-a*j + b*i) % N == 0)
-        ax.add_patch(RegularPolygon(c, 6, radius=R, facecolor='orange' if same else 'lightgrey', edgecolor='k'))
-        if same:
-            ax.text(*c, 'A', ha='center', va='center', fontweight='bold')
-            if (a, b) != (0, 0) and abs(np.hypot(*c) - D) < 1e-6: co.append(c)
-for c in co:                          # first-tier co-channel cells
-    ax.plot([0, c[0]], [0, c[1]], 'r--')
-    ax.text(c[0]/2, c[1]/2, f'D={D:.2f} km', color='r', fontsize=8, ha='center')
-ax.set_aspect('equal'); ax.autoscale_view(); ax.set_xlim(-1.4*D-R, 1.4*D+R); ax.set_ylim(-1.4*D-R, 1.4*D+R)
-ax.set_title(f'Frequency reuse: N={N}, R={R} km, D={D:.2f} km (cells "A" use the same channel)')
+N, R = 7, 1                           # change the values of N and R as per question data
+D = R * np.sqrt(3*N)
+for x, y in [(0,0), (D,0)]:
+    a = np.arange(0, 7)*np.pi/3
+    plt.fill(x+R*np.cos(a), y+R*np.sin(a), alpha=0.3)
+    plt.text(x, y, 'A', ha='center')
+plt.plot([0,D], [0,0], 'r--')
+plt.text(D/2, 0.2, f'D={D:.2f}')
+plt.axis('equal')
+plt.title('Frequency Reuse')
+plt.grid()
 plt.show()
 
 # VIVA Q&A
@@ -296,15 +253,20 @@ for r in rows: print(f'{r[0]:30}{r[1]:24}{r[2]:13}{r[3]}')
 ];
 const X=[
 {th:"A digital communication system has a Transmitter (Tx), a Channel and a Receiver (Rx). AWGN adds zero-mean Gaussian noise with a flat power spectrum: y(t) = x(t) + n(t), and SNR(dB) = 10·log10(Ps/Pn).\nA moving-average filter of window W replaces each sample by the mean of W neighbouring samples, y[n] = (1/W)·Σ x[n-k]. It acts as a low-pass filter: random noise variance falls by about 1/W while the slow sine is kept.",
-out:String.raw`(No console output - three separate figures are produced)
-Figure 1: Transmitted signal  - clean 5 Hz sine, amplitude +/-1, 5 cycles in 1 s.
-Figure 2: Noisy channel output - same sine with random fluctuations (SNR = 10 dB).
-Figure 3: Recovered signal    - smooth sine close to the original, noise strongly reduced.`,
-con:"The sine wave was transmitted, corrupted by AWGN in the channel and recovered at the receiver with a sliding-window moving-average filter. The filter greatly reduced the noise, so the recovered signal closely matches the transmitted one. A larger window removes more noise but smooths (distorts) the signal more."},
+out:String.raw`Sr. No. | Signal           | Observation
+1       | Transmitted      | A clean sine wave of 5 Hz is generated.
+2       | Noisy Channel    | AWGN noise is added, making the signal irregular.
+3       | Recovered Signal | The moving-average filter reduces noise and produces a smoother signal.
+Figures: three separate plots - Transmitted, Noisy Channel, Recovered.`,
+con:"Thus, the communication system was successfully simulated, and the moving-average filter reduced noise to obtain a smoother recovered signal."},
 {th:"Frequency reuse means using the same channel set in different cells that are far enough apart. A cluster of N cells (N = i² + ij + j²) shares all available channels.\nMinimum co-channel reuse distance: D = R·√(3N), where R is the cell radius. Reuse ratio q = D/R = √(3N).\nLarger N gives larger D (less co-channel interference) but fewer channels per cell (lower capacity).",
-out:String.raw`N=7, (i,j)=(2,1), R=1.0 km -> D = 4.583 km, D/R = 4.583
-Figure: hexagonal cell layout; cells marked 'A' use the same channel; red dashed lines join the central cell to the six first-tier co-channel cells, each labelled D = 4.58 km.`,
-con:"For N = 7 and R = 1 km the minimum co-channel reuse distance is D = R·√(3N) = 4.58 km (q = 4.58). The plot shows the six nearest co-channel cells at this distance. A larger cluster size increases D and reduces interference, but decreases capacity."},
+out:String.raw`Sr. No. | Parameter             | Observation
+1       | Cluster size (N)      | 7 (change as per the given data)
+2       | Cell radius (R)       | 1 unit
+3       | Reuse distance (D)    | 4.58 units  (D = R*sqrt(3N))
+4       | Hexagonal cells       | Two co-channel cells labelled A are plotted.
+5       | Distance between cells| The distance between the centres is shown by a dashed line.`,
+con:"Thus, cellular frequency reuse was simulated successfully using Python, and the minimum co-channel reuse distance was calculated and plotted."},
 {th:"The 2.4 GHz Wi-Fi band has channels spaced 5 MHz apart, each about 20 MHz wide, so only channels 1, 6 and 11 are non-overlapping.\nRSSI (dBm) is the received signal strength: -30 to -50 excellent, -50 to -67 good, -67 to -80 fair, below -80 weak.\nCo-channel networks share airtime (CSMA/CA); partially overlapping channels corrupt each other's frames and are worse.",
 out:String.raw`SSID             Ch   RSSI  Width
 MWC_LAB_WiFi      6    -45     20
@@ -333,29 +295,55 @@ Trial 3: size=2042 B, RTT=11.0 ms, throughput=1485091 bps = 1485.09 kbps
 Average throughput = 1337.76 kbps, spread = 318.23 kbps   (sample values - use your Packet Tracer readings)`,
 con:"The wireless LAN was configured and connectivity verified using ping. RTT for 1500-byte packets was higher than for the default packet, and the 2000-byte payload (fragmented) took longer still, so latency rises with packet size. Throughput varied slightly across the three trials because of wireless medium access and ARP."},
 {th:"Free-space path loss (FSPL) is the power lost by a signal travelling in line of sight: FSPL(dB) = 20·log10(d_km) + 20·log10(f_MHz) + 32.44.\nLoss grows logarithmically with distance and frequency: doubling either one adds about 6 dB. Lower frequencies have less loss, hence longer range.",
-out:String.raw`FSPL @10 m, 700 MHz = 49.34 dB
-FSPL @10 m, 900 MHz = 51.52 dB
-FSPL @400 m, 700 MHz = 81.38 dB
-FSPL @800 m, 700 MHz = 87.4 dB
+out:String.raw`Path Loss vs Distance
+Distance varies from 1 m to 50 m, with frequencies fixed at 700 MHz and 900 MHz.
+Distance (m) | 700 MHz (dB) | 900 MHz (dB)
+1            | 29.34        | 31.52
+10           | 49.34        | 51.52
+20           | 55.36        | 57.54
+30           | 58.88        | 61.07
+40           | 61.38        | 63.57
+50           | 63.32        | 65.50
+[PLOT GRAPH]
 
-Distance (m) | 700 MHz | 900 MHz        Frequency (MHz) | 400 m  | 800 m
-1            | 29.34   | 31.52          700             | 81.38  | 87.40
-10           | 49.34   | 51.52          900             | 83.57  | 89.59
-50           | 63.32   | 65.50
-Figures: (1) FSPL vs distance, two rising curves; (2) FSPL vs frequency, two nearly flat rising lines.`,
-con:"Path loss increases with distance (about +6 dB per doubling) and with frequency. The 900 MHz curve lies 2.2 dB above the 700 MHz curve (20·log10(900/700)). Over 700-900 MHz the loss changes by only ~2.2 dB, whereas moving from 400 m to 800 m adds 6 dB, so distance has the larger effect."},
+Path Loss vs Frequency
+Frequency varies from 700 MHz to 900 MHz, with distances fixed at 400 m and 800 m.
+Frequency (MHz) | 400 m (dB) | 800 m (dB)
+700             | 81.38      | 87.40
+750             | 81.98      | 88.00
+800             | 82.54      | 88.56
+850             | 83.07      | 89.09
+900             | 83.57      | 89.59
+[PLOT GRAPH]
+
+COMMENT: From the graphs, it is observed that path loss increases with an increase in distance and frequency. Path loss is higher at 900 MHz than at 700 MHz and higher at 800 m than at 400 m.`,
+con:"Thus, free-space path loss is calculated and plotted successfully. It increases with an increase in distance and frequency."},
 {th:"Free-space path loss (FSPL) is the power lost by a signal travelling in line of sight: FSPL(dB) = 20·log10(d_km) + 20·log10(f_MHz) + 32.44.\nLoss grows logarithmically with distance and frequency: doubling either one adds about 6 dB. Higher frequencies (1800/2100 MHz) suffer more loss than low bands, so they need smaller cells.",
-out:String.raw`FSPL @10 m, 1800 MHz = 57.55 dB
-FSPL @10 m, 2100 MHz = 58.88 dB
-FSPL @600 m, 1800 MHz = 93.11 dB
-FSPL @1200 m, 1800 MHz = 99.13 dB
+out:String.raw`A. Path Loss vs Distance
+Distance varies from 1 m to 50 m, while frequencies are fixed at 1800 MHz and 2100 MHz.
+Distance (m) | 1800 MHz (dB) | 2100 MHz (dB)
+1            | 37.55         | 38.88
+10           | 57.55         | 58.88
+20           | 63.57         | 64.90
+30           | 67.09         | 68.43
+40           | 69.59         | 70.93
+50           | 71.52         | 72.86
+[PLOT GRAPH]
 
-Distance (m) | 1800 MHz | 2100 MHz       Frequency (MHz) | 600 m  | 1200 m
-1            | 37.55    | 38.88          1800            | 93.11  | 99.13
-10           | 57.55    | 58.88          2100            | 94.45  | 100.47
-50           | 71.52    | 72.86
-Figures: (1) FSPL vs distance, two rising curves; (2) FSPL vs frequency, two nearly flat rising lines.`,
-con:"Path loss increases with distance (about +6 dB per doubling) and with frequency. The 2100 MHz curve is 1.34 dB above the 1800 MHz curve (20·log10(2100/1800)). Over 1800-2100 MHz the change is only ~1.3 dB, while doubling the distance from 600 m to 1200 m adds 6 dB, so distance dominates."},
+B. Path Loss vs Frequency
+Frequency varies from 1800 MHz to 2100 MHz, while distances are fixed at 600 m and 1200 m.
+Frequency (MHz) | 600 m (dB) | 1200 m (dB)
+1800            | 93.11      | 99.13
+1850            | 93.35      | 99.37
+1900            | 93.58      | 99.60
+1950            | 93.80      | 99.82
+2000            | 94.02      | 100.04
+2050            | 94.24      | 100.26
+2100            | 94.45      | 100.47
+[PLOT GRAPH]
+
+COMMENT: From the graphs, it is observed that free-space path loss increases with an increase in distance and frequency. Path loss is higher at 2100 MHz than at 1800 MHz and higher at 1200 m than at 600 m.`,
+con:"Thus, free-space path loss is calculated and plotted successfully. It increases with an increase in distance and frequency."},
 {th:"RSRP (Reference Signal Received Power) measures LTE coverage. RSRQ = N·RSRP/RSSI measures quality, including interference and load. SINR is signal power divided by interference plus noise and decides data rate and modulation.\nTypical grades - RSRP: >= -80 excellent, -80 to -90 good, -90 to -100 fair, < -100 poor. RSRQ: >= -10 excellent, -10 to -15 good, -15 to -20 fair. SINR: >= 20 excellent, 13-20 good, 0-13 fair, < 0 poor.",
 out:String.raw`Network type: 4G (LTE)
 Reading 1 (t=0 min): RSRP=-92 dBm, RSRQ=-11 dB, SINR=14 dB
