@@ -46,34 +46,27 @@ pre{margin:0;padding:12px 14px 14px 20px;overflow-x:auto;font:13px/1.55 "Roboto 
 const FS=String.raw`import numpy as np
 import matplotlib.pyplot as plt
 
-# Take input from the user
-N = int(input("Enter the frequency reuse factor (N): "))
-R = float(input("Enter the cell radius (R): "))
-
-# Calculate distance
-D = R * np.sqrt(3 * N)
-
-# Draw two hexagonal cells
-for x, y in [(0, 0), (D, 0)]:
-    a = np.arange(0, 7) * np.pi / 3
-    plt.fill(x + R * np.cos(a), y + R * np.sin(a), alpha=0.3)
-    plt.text(x, y, 'A', ha='center', va='center')
-
-# Draw distance between cells
-plt.plot([0, D], [0, 0], 'r--')
-plt.text(D / 2, 0.2 * R, f'D = {D:.2f}', ha='center')
-
-# Display the graph
-plt.axis('equal')
-plt.title('Frequency Reuse')
-plt.xlabel('X-axis')
-plt.ylabel('Y-axis')
+# I & II. Path loss vs distance (1 m to 50 m) at @F1@ MHz and @F2@ MHz
+d = np.arange(1, 51)
+for f in [@F1@, @F2@]:
+    plt.plot(d, 32.44 + 20*np.log10(d/1000) + 20*np.log10(f), label=f'{f} MHz')
+plt.title('Path Loss vs Distance')
+plt.xlabel('Distance (m)')
+plt.ylabel('Path Loss (dB)')
+plt.legend()
 plt.grid()
 plt.show()
 
-# Display the calculated distance
-print(f"Frequency reuse distance (D) = {D:.2f}")
-
+# III & IV. Path loss vs frequency (@F1@ to @F2@ MHz) at @D1@ m and @D2@ m
+f = np.arange(@F1@, @F2@ + 1)
+for d in [@D1@, @D2@]:
+    plt.plot(f, 32.44 + 20*np.log10(d/1000) + 20*np.log10(f), label=f'{d} m')
+plt.title('Path Loss vs Frequency')
+plt.xlabel('Frequency (MHz)')
+plt.ylabel('Path Loss (dB)')
+plt.legend()
+plt.grid()
+plt.show()
 
 # VIVA Q&A
 # Q1. What is FSPL? A: Power loss of a signal travelling in free space (line of sight, no obstacles).
@@ -102,20 +95,38 @@ for s, title in [(tx, 'Transmitted'), (noise, 'Noisy Channel'), (rx, 'Recovered'
 # Q3. Effect of a larger window? A: More noise removal but more smoothing/distortion of the signal.
 # Q4. What is SNR? A: Signal power / noise power (in dB = 10*log10(Ps/Pn)).
 # Q5. Name another filter. A: Butterworth / FIR low-pass filter.`},
-{t:"Q2. Cellular frequency reuse",q:"Simulate cellular frequency reuse:\nI. Define cluster size N and cell radius R.\nII. Calculate the minimum co-channel reuse distance.\nIII. Plot and label hexagonal cells using the same channel, showing distance between co-channel cell centres.",code:String.raw`import numpy as np
+{t:"Q2. Cellular frequency reuse",q:"Simulate cellular frequency reuse:\nI. Define cluster size N and cell radius R.\nII. Calculate the minimum co-channel reuse distance.\nIII. Plot and label hexagonal cells using the same channel, showing distance between co-channel cell centres.",code:String.raw`
+import numpy as np
 import matplotlib.pyplot as plt
-N, R = 7, 1                           # change the values of N and R as per question data
-D = R * np.sqrt(3*N)
-for x, y in [(0,0), (D,0)]:
-    a = np.arange(0, 7)*np.pi/3
-    plt.fill(x+R*np.cos(a), y+R*np.sin(a), alpha=0.3)
-    plt.text(x, y, 'A', ha='center')
-plt.plot([0,D], [0,0], 'r--')
-plt.text(D/2, 0.2, f'D={D:.2f}')
+
+# Take input from the user
+N = int(input("Enter the frequency reuse factor (N): "))
+R = float(input("Enter the cell radius (R): "))
+
+# Calculate distance
+D = R * np.sqrt(3 * N)
+
+# Draw two hexagonal cells
+for x, y in [(0, 0), (D, 0)]:
+    a = np.arange(0, 7) * np.pi / 3
+    plt.fill(x + R * np.cos(a), y + R * np.sin(a), alpha=0.3)
+    plt.text(x, y, 'A', ha='center', va='center')
+
+# Draw distance between cells
+plt.plot([0, D], [0, 0], 'r--')
+plt.text(D / 2, 0.2 * R, f'D = {D:.2f}', ha='center')
+
+# Display the graph
 plt.axis('equal')
 plt.title('Frequency Reuse')
+plt.xlabel('X-axis')
+plt.ylabel('Y-axis')
 plt.grid()
 plt.show()
+
+# Display the calculated distance
+print(f"Frequency reuse distance (D) = {D:.2f}")
+
 
 # VIVA Q&A
 # Q1. What is frequency reuse? A: Using the same channel set in different cells separated by enough distance to limit interference.
